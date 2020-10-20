@@ -1,15 +1,14 @@
+import argparse
+
 # creates a dictionary containing information about a given .c file.
 # TO DO: intake file properly instead of just using a local one
-def make_dict():
+def make_dict(filename):
     my_dict = dict(
         comments='',  # string of all comments
         function_list=[],  # list of lists. Each list contains func name, output type, and list of parameters
         lib_list=[],  # list of libraries include-ed
         struct_list=[]  # list of structs defined
     )
-
-    # define the name of the file to read from
-    filename = "2_helper.c"
 
     # open the file for reading
     filehandle = open(filename, 'r')
@@ -91,6 +90,9 @@ def make_dict():
 
     return my_dict
 
+parser = argparse.ArgumentParser()
+parser.add_argument('--filename', help='Name of file to xtract.', required=True)
+args = parser.parse_args()
 
-d = make_dict()
+d = make_dict(args.filename)
 print(d)
