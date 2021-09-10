@@ -1,8 +1,20 @@
 import argparse
+import time
+
+
+def execute_extractor(filename):
+    t0 = time.time()
+    if not filename:
+        return None
+    metadata = extract_metadata(filename=filename)
+    t1 = time.time()
+    metadata.update({"extract time": (t1 - t0)})
+    return metadata
+
 
 # creates a dictionary containing information about a given .c file.
-# TO DO: intake file properly instead of just using a local one
-def make_dict(filename):
+# TODO: intake file properly instead of just using a local one
+def extract_metadata(filename):
     my_dict = dict(
         comments='',  # string of all comments
         function_list=[],  # list of lists. Each list contains func name, output type, and list of parameters
@@ -90,9 +102,13 @@ def make_dict(filename):
 
     return my_dict
 
-parser = argparse.ArgumentParser()
-parser.add_argument('--filename', help='Name of file to xtract.', required=True)
-args = parser.parse_args()
 
-d = make_dict(args.filename)
-print(d)
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='c-code extractor: main function')
+    parser.add_argument('--filename', type=str, default=None, 
+                        help='name of file to xtract', required=True)
+    argv = parser.parse_args()
+    filename = argv.filename
+
+    meta = execute_extractor(filename)
+    print(meta)
