@@ -105,10 +105,10 @@ def extract_metadata(filename):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='c-code extractor: main function')
-    parser.add_argument('--filename', type=str, default=None, 
+    parser.add_argument('--path', type=str, default=None, 
                         help='name of file to xtract', required=True)
     argv = parser.parse_args()
-    filename = argv.filename
+    filename = argv.path
 
     meta = execute_extractor(filename)
     print(meta)
