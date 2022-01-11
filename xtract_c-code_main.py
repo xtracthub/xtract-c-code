@@ -23,7 +23,10 @@ def extract_metadata(filename):
     )
 
     # open the file for reading
-    filehandle = open(filename, 'r')
+    try:
+        filehandle = open(filename, 'r')
+    except Exception as e:
+        return {'error': str(e)}
 
     # 1 if currently working through multiline comment, 0 otherwise.
     is_multiline_comment = 0
@@ -31,9 +34,17 @@ def extract_metadata(filename):
     num_open_brackets = 0
 
     # iterate through each line of the file
+    num_lines = 0
     while True:
+        # Case that will likely never be reached? A 20k-line c file? 
+        if num_lines > 20000:
+            break
+
         # read a single line, if there is one
-        line = filehandle.readline()
+        try:
+            line = filehandle.readline()
+        except Exception as e:
+            return {'error': str(e)}
         if not line:
             break
 
@@ -98,7 +109,10 @@ def extract_metadata(filename):
             num_open_brackets -= 1
 
     # close the pointer to that file
-    filehandle.close()
+    try:
+        filehandle.close()
+    except Exception as e:
+        return {'error': str(e)}
 
     return my_dict
 
